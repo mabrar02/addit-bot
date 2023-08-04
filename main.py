@@ -10,9 +10,19 @@ async def on_ready():
     print("---------------")
 
 
-@client.command()
-async def helo(ctx):
-    await ctx.send("testing hello from bot")
+def to_upper(argument):
+    return argument.upper()
 
+@client.command()
+async def up(ctx, *, content: to_upper):
+    await ctx.send(content)
+
+@client.command()
+async def test(ctx):
+    message = "you're not him"
+    if(ctx.author.name.lower() == "addit"):
+        message = "you're him"
+
+    await ctx.send(message)
 
 client.run(AUTH_KEY)
