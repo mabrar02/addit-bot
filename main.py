@@ -1,6 +1,8 @@
 import discord
+import requests
 from discord.ext import commands
 from hidden import AUTH_KEY
+from hidden import API_KEY
 
 client = commands.Bot(command_prefix="!", intents=discord.Intents.all())
 
@@ -10,19 +12,14 @@ async def on_ready():
     print("---------------")
 
 
-def to_upper(argument):
-    return argument.upper()
 
 @client.command()
-async def up(ctx, *, content: to_upper):
-    await ctx.send(content)
+async def getAcc(ctx, *, acc):
+    acc.replace(" ", "%20")
+    api_url = "https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + acc
+    api_req = api_url + "?api_key=" + API_KEY
+    response = requests.get(api_req)
 
-@client.command()
-async def test(ctx):
-    message = "you're not him"
-    if(ctx.author.name.lower() == "addit"):
-        message = "you're him"
-
-    await ctx.send(message)
+    await ctx.send(response.json())
 
 client.run(AUTH_KEY)
