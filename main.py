@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from riotApi import *
+from fortuneApi import *
 from keys import DISC_AUTH_KEY
 
 
@@ -44,5 +45,15 @@ async def recentPerformance(ctx, *, acc):
 
 
     await ctx.send("This player won %d of their last 20 ranked games" % (winCount))
+
+@client.command()
+async def dailyFortune(ctx):
+    data = getFortune(ctx.author.name)
+
+    if(data is not None):
+        await ctx.send(data["answer"])
+    else:
+        await ctx.send("You've already received your fortune for the day: " + fortunate[ctx.author.name])
+    
 
 client.run(DISC_AUTH_KEY)
